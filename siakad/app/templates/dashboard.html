@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Dashboard</h2>
+<div class="cards">
+  <div class="card">Siswa<br><strong>{{ students_count }}</strong></div>
+  <div class="card">Guru<br><strong>{{ teachers_count }}</strong></div>
+  <div class="card">Mata Pelajaran<br><strong>{{ subjects_count }}</strong></div>
+</div>
+
+<h3>Rata-rata Nilai per Mata Pelajaran</h3>
+<canvas id="avgChart" height="120"></canvas>
+<script>
+  const ctx = document.getElementById('avgChart');
+  const chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: {{ chart_labels|tojson }},
+      datasets: [{
+        label: 'Nilai Rata-rata',
+        data: {{ chart_data|tojson }},
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgb(54, 162, 235)',
+        borderWidth: 1
+      }]
+    },
+    options: { scales: { y: { beginAtZero: true, suggestedMax: 100 } } }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Edit Siswa</h2>
+<form method="post" class="form">
+  <div class="grid-2">
+    <label>NIS<input name="nis" value="{{ s.nis }}" required></label>
+    <label>Nama<input name="name" value="{{ s.name }}" required></label>
+    <label>Tanggal Lahir<input type="date" name="birth_date" value="{{ s.birth_date }}" required></label>
+    <label>Jenis Kelamin
+      <select name="gender">
+        <option value="L" {% if s.gender=='L' %}selected{% endif %}>Laki-laki</option>
+        <option value="P" {% if s.gender=='P' %}selected{% endif %}>Perempuan</option>
+      </select>
+    </label>
+    <label>Kelas<input name="class_name" value="{{ s.class_name }}" required></label>
+    <label>No. Telp Orang Tua<input name="parent_phone" value="{{ s.parent_phone }}"></label>
+  </div>
+  <label>Alamat<textarea name="address">{{ s.address }}</textarea></label>
+  <button type="submit">Simpan</button>
+  <a href="{{ url_for('students.index') }}">Batal</a>
+</form>
+{% endblock %}

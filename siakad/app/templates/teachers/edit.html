@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Edit Guru</h2>
+<form method="post" class="form">
+  <div class="grid-2">
+    <label>NIP<input name="nip" value="{{ t.nip }}" required></label>
+    <label>Nama<input name="name" value="{{ t.name }}" required></label>
+    <label>Telepon<input name="phone" value="{{ t.phone }}"></label>
+    <label>Alamat<textarea name="address">{{ t.address }}</textarea></label>
+  </div>
+  <button type="submit">Simpan</button>
+  <a href="{{ url_for('teachers.index') }}">Batal</a>
+</form>
+{% endblock %}

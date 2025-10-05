@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="actions no-print">
+  <h2>Mata Pelajaran</h2>
+  {% if current_user.role == 'admin' %}
+  <a class="button" href="{{ url_for('subjects.create') }}">+ Tambah Mapel</a>
+  {% endif %}
+</div>
+<table class="table">
+  <thead><tr><th>Kode</th><th>Nama</th><th>SKS</th><th>Guru Pengampu</th><th class="no-print">Aksi</th></tr></thead>
+  <tbody>
+  {% for s in subjects %}
+    <tr>
+      <td>{{ s.code }}</td>
+      <td>{{ s.name }}</td>
+      <td>{{ s.sks }}</td>
+      <td>{{ s.teacher.name if s.teacher else '-' }}</td>
+      <td class="no-print">
+        {% if current_user.role == 'admin' %}
+        <div class="actions">
+          <a href="{{ url_for('subjects.edit', subject_id=s.id) }}">Edit</a>
+          <a href="{{ url_for('subjects.delete', subject_id=s.id) }}" onclick="return confirm('Hapus mapel ini?')">Hapus</a>
+        </div>
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

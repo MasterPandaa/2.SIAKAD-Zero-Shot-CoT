@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Detail Siswa</h2>
+<table class="table">
+  <tr><th>NIS</th><td>{{ s.nis }}</td></tr>
+  <tr><th>Nama</th><td>{{ s.name }}</td></tr>
+  <tr><th>Tanggal Lahir</th><td>{{ s.birth_date }}</td></tr>
+  <tr><th>Jenis Kelamin</th><td>{{ 'Laki-laki' if s.gender=='L' else 'Perempuan' }}</td></tr>
+  <tr><th>Kelas</th><td>{{ s.class_name }}</td></tr>
+  <tr><th>Orang Tua</th><td>{{ s.parent_phone }}</td></tr>
+  <tr><th>Alamat</th><td>{{ s.address }}</td></tr>
+</table>
+<div class="no-print">
+  <a href="{{ url_for('students.index') }}">Kembali</a>
+  {% if current_user.role == 'admin' %}
+    <a href="{{ url_for('students.edit', student_id=s.id) }}">Edit</a>
+  {% endif %}
+</div>
+{% endblock %}

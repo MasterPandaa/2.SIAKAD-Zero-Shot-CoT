@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Tambah Mata Pelajaran</h2>
+<form method="post" class="form">
+  <div class="grid-2">
+    <label>Kode<input name="code" required></label>
+    <label>Nama<input name="name" required></label>
+    <label>SKS<input type="number" name="sks" min="1" max="6" value="2"></label>
+    <label>Guru Pengampu
+      <select name="teacher_id">
+        <option value="">- Tidak ada -</option>
+        {% for t in teachers %}
+          <option value="{{ t.id }}">{{ t.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+  </div>
+  <button type="submit">Simpan</button>
+  <a href="{{ url_for('subjects.index') }}">Batal</a>
+</form>
+{% endblock %}

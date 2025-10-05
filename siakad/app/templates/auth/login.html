@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Login</h2>
+<form method="post" class="form">
+  <div class="grid-2">
+    <label>Username
+      <input type="text" name="username" required>
+    </label>
+    <label>Password
+      <input type="password" name="password" required>
+    </label>
+  </div>
+  <button type="submit">Masuk</button>
+  <p class="hint">Jika pertama kali, akses <code>/auth/init</code> untuk membuat Admin.</p>
+</form>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Tambah Siswa</h2>
+<form method="post" class="form">
+  <div class="grid-2">
+    <label>NIS<input name="nis" required></label>
+    <label>Nama<input name="name" required></label>
+    <label>Tanggal Lahir<input type="date" name="birth_date" required></label>
+    <label>Jenis Kelamin
+      <select name="gender">
+        <option value="L">Laki-laki</option>
+        <option value="P">Perempuan</option>
+      </select>
+    </label>
+    <label>Kelas<input name="class_name" placeholder="X IPA 1" required></label>
+    <label>No. Telp Orang Tua<input name="parent_phone"></label>
+  </div>
+  <label>Alamat<textarea name="address"></textarea></label>
+
+  <fieldset>
+    <legend>Login Siswa (opsional)</legend>
+    <label class="no-print"><input type="checkbox" name="create_login"> Buat akun login</label>
+    <div class="grid-2">
+      <label>Username<input name="username"></label>
+      <label>Password<input type="password" name="password"></label>
+    </div>
+  </fieldset>
+
+  <button type="submit">Simpan</button>
+  <a href="{{ url_for('students.index') }}">Batal</a>
+</form>
+{% endblock %}

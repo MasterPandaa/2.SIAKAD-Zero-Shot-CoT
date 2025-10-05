@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Transkrip Nilai</h2>
+{% if not target_student and students %}
+  <form method="get">
+    <label>Pilih siswa
+      <select name="student_id" onchange="this.form.submit()">
+        <option value="">- Pilih -</option>
+        {% for s in students %}
+          <option value="{{ s.id }}">{{ s.class_name }} - {{ s.nis }} - {{ s.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+  </form>
+{% endif %}
+
+{% if target_student %}
+  <p><strong>{{ target_student.name }}</strong> ({{ target_student.nis }}) - {{ target_student.class_name }}</p>
+  <table class="table">
+    <thead><tr><th>Kode</th><th>Mata Pelajaran</th><th>SKS</th><th>Tugas</th><th>UTS</th><th>UAS</th><th>Nilai Akhir</th></tr></thead>
+    <tbody>
+      {% for code, name, sks, tugas, uts, uas, final_score in grades %}
+      <tr>
+        <td>{{ code }}</td>
+        <td>{{ name }}</td>
+        <td>{{ sks }}</td>
+        <td>{{ tugas }}</td>
+        <td>{{ uts }}</td>
+        <td>{{ uas }}</td>
+        <td>{{ final_score }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+{% endblock %}

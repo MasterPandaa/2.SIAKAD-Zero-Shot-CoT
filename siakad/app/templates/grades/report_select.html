@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Laporan Nilai per Kelas</h2>
+<form method="post" class="form">
+  <div class="grid-2">
+    <label>Mata Pelajaran
+      <select name="subject_id" required>
+        <option value="">- Pilih -</option>
+        {% for s in subjects %}
+          <option value="{{ s.id }}">{{ s.name }} ({{ s.code }})</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Kelas
+      <select name="class_name" required>
+        <option value="">- Pilih -</option>
+        {% for c in classes %}
+          <option value="{{ c }}">{{ c }}</option>
+        {% endfor %}
+      </select>
+    </label>
+  </div>
+  <button type="submit">Lihat</button>
+</form>
+{% endblock %}

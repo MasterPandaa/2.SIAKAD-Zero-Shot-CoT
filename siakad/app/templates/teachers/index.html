@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="actions no-print">
+  <h2>Data Guru</h2>
+  <a class="button" href="{{ url_for('teachers.create') }}">+ Tambah Guru</a>
+</div>
+<table class="table">
+  <thead><tr><th>NIP</th><th>Nama</th><th>Telepon</th><th class="no-print">Aksi</th></tr></thead>
+  <tbody>
+  {% for t in teachers %}
+    <tr>
+      <td>{{ t.nip }}</td>
+      <td>{{ t.name }}</td>
+      <td>{{ t.phone }}</td>
+      <td class="no-print">
+        <div class="actions">
+          <a href="{{ url_for('teachers.edit', teacher_id=t.id) }}">Edit</a>
+          <a href="{{ url_for('teachers.delete', teacher_id=t.id) }}" onclick="return confirm('Hapus guru ini?')">Hapus</a>
+        </div>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

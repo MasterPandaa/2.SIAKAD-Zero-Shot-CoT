@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="actions no-print">
+  <h2>Data Siswa</h2>
+  {% if current_user.role == 'admin' %}
+    <a class="button" href="{{ url_for('students.create') }}">+ Tambah Siswa</a>
+  {% endif %}
+</div>
+<table class="table">
+  <thead><tr><th>NIS</th><th>Nama</th><th>Kelas</th><th class="no-print">Aksi</th></tr></thead>
+  <tbody>
+  {% for s in students %}
+    <tr>
+      <td>{{ s.nis }}</td>
+      <td><a href="{{ url_for('students.detail', student_id=s.id) }}">{{ s.name }}</a></td>
+      <td>{{ s.class_name }}</td>
+      <td class="no-print">
+        {% if current_user.role == 'admin' %}
+          <div class="actions">
+            <a href="{{ url_for('students.edit', student_id=s.id) }}">Edit</a>
+            <a href="{{ url_for('students.delete', student_id=s.id) }}" onclick="return confirm('Hapus data siswa ini?')">Hapus</a>
+          </div>
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

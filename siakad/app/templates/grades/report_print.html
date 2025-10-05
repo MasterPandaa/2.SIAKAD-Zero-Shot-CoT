@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="no-print" style="display:flex; justify-content:space-between; align-items:center;">
+  <h2>Laporan Nilai - {{ subj.name }} ({{ subj.code }}) - Kelas {{ class_name }}</h2>
+  <button onclick="window.print()">Print</button>
+</div>
+<table class="table">
+  <thead><tr><th>No</th><th>NIS</th><th>Nama</th><th>Tugas</th><th>UTS</th><th>UAS</th><th>Nilai Akhir</th></tr></thead>
+  <tbody>
+  {% for s in students %}
+    {% set g = grades_by_student.get(s.id) %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td>{{ s.nis }}</td>
+      <td>{{ s.name }}</td>
+      <td>{{ g.tugas if g else '-' }}</td>
+      <td>{{ g.uts if g else '-' }}</td>
+      <td>{{ g.uas if g else '-' }}</td>
+      <td>{{ g.final_score if g else '-' }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
