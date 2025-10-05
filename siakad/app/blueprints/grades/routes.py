@@ -1,9 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
-from flask_login import login_required, current_user
-from sqlalchemy import func
 from app.extensions import db
-from app.models import Student, Teacher, Subject, Grade
-from app.utils import role_required, calc_final
+from app.models import Grade, Student, Subject, Teacher
+from app.utils import calc_final, role_required
+from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from flask_login import current_user, login_required
+from sqlalchemy import func
 
 grades_bp = Blueprint("grades", __name__)
 
@@ -16,7 +16,12 @@ def _subjects_for_user():
 
 
 def _classes():
-    rows = db.session.query(Student.class_name).distinct().order_by(Student.class_name).all()
+    rows = (
+        db.session.query(Student.class_name)
+        .distinct()
+        .order_by(Student.class_name)
+        .all()
+    )
     return [r[0] for r in rows]
 
 
@@ -31,8 +36,13 @@ def select_input():
         if not subject_id or not class_name:
             flash("Pilih mata pelajaran dan kelas.", "warning")
             return redirect(url_for("grades.select_input"))
-        return redirect(url_for("grades.input_scores", subject_id=subject_id, class_name=class_name))
-    return render_template("grades/select_input.html", subjects=subjects, classes=classes)
+        return redirect(
+            url_for("grades.input_scores",
+                    subject_id=subject_id, class_name=class_name)
+        )
+    return render_template(
+        "grades/select_input.html", subjects=subjects, classes=classes
+    )
 
 
 @grades_bp.route("/input")
@@ -44,7 +54,10 @@ def input_scores():
     if current_user.role == "teacher" and subj.teacher_id != current_user.teacher_id:
         abort(403)
 
-    students = Student.query.filter_by(class_name=class_name).order_by(Student.name).all()
+    students = (
+        Student.query.filter_by(
+            class_name=class_name).order_by(Student.name).all()
+    )
     grades = Grade.query.filter_by(subject_id=subject_id).all()
     by_student = {g.student_id: g for g in grades}
 
@@ -74,7 +87,8 @@ def save_scores():
             uas = float(request.form.get(f"uas_{s.id}", 0) or 0)
             final = calc_final(tugas, uts, uas)
 
-            g = Grade.query.filter_by(student_id=s.id, subject_id=subject_id).first()
+            g = Grade.query.filter_by(
+                student_id=s.id, subject_id=subject_id).first()
             if not g:
                 g = Grade(student_id=s.id, subject_id=subject_id)
                 db.session.add(g)
@@ -88,7 +102,10 @@ def save_scores():
         db.session.rollback()
         flash(f"Gagal menyimpan nilai: {e}", "danger")
 
-    return redirect(url_for("grades.input_scores", subject_id=subject_id, class_name=class_name))
+    return redirect(
+        url_for("grades.input_scores",
+                subject_id=subject_id, class_name=class_name)
+    )
 
 
 @grades_bp.route("/transcript")
@@ -100,7 +117,8 @@ def transcript():
     if current_user.role == "student" and current_user.student_id:
         target_student = Student.query.get(current_user.student_id)
     else:
-        students = Student.query.order_by(Student.class_name, Student.name).all()
+        students = Student.query.order_by(
+            Student.class_name, Student.name).all()
         student_id = request.args.get("student_id", type=int)
         if student_id:
             target_student = Student.query.get_or_404(student_id)
@@ -124,7 +142,12 @@ def transcript():
             query = query.filter(Subject.teacher_id == current_user.teacher_id)
         grades = query.order_by(Subject.code).all()
 
-    return render_template("grades/transcript.html", target_student=target_student, students=students, grades=grades)
+    return render_template(
+        "grades/transcript.html",
+        target_student=target_student,
+        students=students,
+        grades=grades,
+    )
 
 
 @grades_bp.route("/report", methods=["GET", "POST"])
@@ -138,8 +161,13 @@ def report_select():
         if not subject_id or not class_name:
             flash("Pilih mata pelajaran dan kelas.", "warning")
             return redirect(url_for("grades.report_select"))
-        return redirect(url_for("grades.report_print", subject_id=subject_id, class_name=class_name))
-    return render_template("grades/report_select.html", subjects=subjects, classes=classes)
+        return redirect(
+            url_for("grades.report_print",
+                    subject_id=subject_id, class_name=class_name)
+        )
+    return render_template(
+        "grades/report_select.html", subjects=subjects, classes=classes
+    )
 
 
 @grades_bp.route("/report/print")
@@ -151,7 +179,10 @@ def report_print():
     if current_user.role == "teacher" and subj.teacher_id != current_user.teacher_id:
         abort(403)
 
-    students = Student.query.filter_by(class_name=class_name).order_by(Student.name).all()
+    students = (
+        Student.query.filter_by(
+            class_name=class_name).order_by(Student.name).all()
+    )
     grades = Grade.query.filter_by(subject_id=subject_id).all()
     by_student = {g.student_id: g for g in grades}
 

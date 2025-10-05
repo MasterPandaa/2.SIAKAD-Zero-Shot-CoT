@@ -1,8 +1,8 @@
+from app.extensions import db
+from app.models import Grade, Student, Subject, Teacher
 from flask import Blueprint, render_template
 from flask_login import login_required
 from sqlalchemy import func
-from app.extensions import db
-from app.models import Student, Teacher, Subject, Grade
 
 main_bp = Blueprint("main", __name__)
 

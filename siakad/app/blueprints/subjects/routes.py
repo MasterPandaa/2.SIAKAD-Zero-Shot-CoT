@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
-from flask_login import current_user
 from app.extensions import db
 from app.models import Subject, Teacher
 from app.utils import role_required
+from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask_login import current_user
 
 subjects_bp = Blueprint("subjects", __name__)
 
