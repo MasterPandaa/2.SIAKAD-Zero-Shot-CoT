@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.extensions import db
 from app.models import Teacher, User
 from app.utils import role_required
+from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 teachers_bp = Blueprint("teachers", __name__)
 
@@ -30,7 +30,8 @@ def create():
                 username = request.form.get("username", "").strip()
                 password = request.form.get("password", "")
                 if username and password:
-                    u = User(username=username, role="teacher", teacher_id=t.id)
+                    u = User(username=username,
+                             role="teacher", teacher_id=t.id)
                     u.set_password(password)
                     db.session.add(u)
                 else:

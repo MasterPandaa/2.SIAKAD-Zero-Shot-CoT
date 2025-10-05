@@ -1,9 +1,10 @@
 from datetime import date
-from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
-from flask_login import login_required, current_user
+
 from app.extensions import db
 from app.models import Student, User
 from app.utils import role_required
+from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from flask_login import current_user, login_required
 
 students_bp = Blueprint("students", __name__)
 
@@ -46,7 +47,8 @@ def create():
                 username = request.form.get("username", "").strip()
                 password = request.form.get("password", "")
                 if username and password:
-                    u = User(username=username, role="student", student_id=s.id)
+                    u = User(username=username,
+                             role="student", student_id=s.id)
                     u.set_password(password)
                     db.session.add(u)
                 else:
@@ -78,11 +80,15 @@ def edit(student_id):
         try:
             s.nis = request.form.get("nis", s.nis).strip()
             s.name = request.form.get("name", s.name).strip()
-            birth_date_str = request.form.get("birth_date", s.birth_date.isoformat()).strip()
+            birth_date_str = request.form.get(
+                "birth_date", s.birth_date.isoformat()
+            ).strip()
             s.birth_date = date.fromisoformat(birth_date_str)
             s.address = request.form.get("address", s.address or "").strip()
             s.gender = request.form.get("gender", s.gender).strip()
-            s.parent_phone = request.form.get("parent_phone", s.parent_phone or "").strip()
+            s.parent_phone = request.form.get(
+                "parent_phone", s.parent_phone or ""
+            ).strip()
             s.class_name = request.form.get("class_name", s.class_name).strip()
             db.session.commit()
             flash("Siswa berhasil diperbarui.", "success")
